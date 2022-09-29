@@ -6,8 +6,19 @@ async function getCategories(req,res){
         return res.send(query.rows);
     } catch (error) {
         console.error(error);
-        res.sendStatus(500);
+        return res.sendStatus(500);
     }
 }
 
-export { getCategories };
+async function postCategories(req,res){
+    const category = res.locals.category;
+    try {
+        await connection.query('INSERT INTO categories (name) VALUES ($1);',[category.name]);
+    } catch (error) {
+        console.error(error);
+        return res.sendStatus(500);
+    }
+    return res.sendStatus(201);
+}
+
+export { getCategories, postCategories };

@@ -18,4 +18,10 @@ async function getCustomers(req,res){
     return(res.send(query.rows));
 }
 
-export {getCustomers};
+async function getCustomersById(req,res){
+    const customer = res.locals.customer;
+    return res.send(customer);
+
+}
+
+export { getCustomers, getCustomersById };

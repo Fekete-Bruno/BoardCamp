@@ -1,5 +1,6 @@
 import categorySchema from "../schemas/category.schema.js";
 import connection from "../database/database.js"
+import { findArr } from "./validationFunctions.js";
 
 async function validateCategories(req,res,next){
     const category = req.body;
@@ -12,7 +13,7 @@ async function validateCategories(req,res,next){
 
     try {
         const query = await connection.query('SELECT * FROM categories;');
-        if(isRepeated(query.rows,category.name)){
+        if(findArr(query.rows,category.name,"name")){
             return res.sendStatus(409)
         }
     } catch (error) {
@@ -24,9 +25,4 @@ async function validateCategories(req,res,next){
 
     next();
 }
-
-function isRepeated(categories,name){
-    return (categories.find((el)=>{return (el.name===name)}));
-}
-
 export default validateCategories;

@@ -18,10 +18,13 @@ async function getCustomers(req,res){
     return(res.send(query.rows));
 }
 
-async function getCustomersById(req,res){
+function getCustomersById(req,res){
     const customer = res.locals.customer;
     return res.send(customer);
-
 }
 
-export { getCustomers, getCustomersById };
+function postCustomers(req,res){
+    return res.sendStatus(201);
+}
+
+export { getCustomers, getCustomersById, postCustomers };

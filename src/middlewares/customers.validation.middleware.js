@@ -1,4 +1,6 @@
 import connection from "../database/database.js";
+import customerSchema from "../schemas/customer.schema.js";
+import { findArr } from "./validationFunctions.js";
 
 async function validateCustomerId(req,res,next){
     const {id} = req.params;
@@ -21,4 +23,26 @@ async function validateCustomerId(req,res,next){
     next();
 }
 
-export {validateCustomerId}
+async function validateCustomer(req,res,next){
+    const customer = req.body;
+    const validation = customerSchema.validate(customer, {abortEarly: false});
+
+    if(validation.error){
+        console.error(validation.error.details);
+        return res.sendStatus(400);
+    }
+
+    try {
+        const queryCustomer = await connection.query('SELECT cpf FROM customers');
+        if(findArr(queryCustomer.rows,customer.cpf,"cpf")){
+            return res.sendStatus(409);
+        }
+    } catch (error) {
+        console.error(error);
+        return res.sendStatus(500);
+    }
+
+    next();
+}
+
+export { validateCustomerId, validateCustomer }

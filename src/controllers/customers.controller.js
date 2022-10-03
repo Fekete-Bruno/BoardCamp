@@ -47,7 +47,8 @@ async function putCustomers(req,res){
             [customer.name,customer.cpf,customer.phone,customer.birthday,id]
         );
     } catch (error) {
-        
+        console.error(error);
+        return res.sendStatus(500);
     }
 
     return res.sendStatus(200);

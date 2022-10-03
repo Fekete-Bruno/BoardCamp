@@ -42,6 +42,8 @@ async function validateCustomer(req,res,next){
         return res.sendStatus(500);
     }
 
+    res.locals.customer = customer;
+
     next();
 }
 

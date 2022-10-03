@@ -23,7 +23,18 @@ function getCustomersById(req,res){
     return res.send(customer);
 }
 
-function postCustomers(req,res){
+async function postCustomers(req,res){
+    const customer = res.locals.customer;
+
+    try {
+        await connection.query(
+            'INSERT INTO customers ("name","phone","cpf","birthday") VALUES ($1,$2,$3,$4);',
+            [customer.name,customer.phone,customer.cpf,customer.birthday]
+        );
+    } catch (error) {
+        console.error(error);
+        return res.sendStatus(500);
+    }
     return res.sendStatus(201);
 }
 

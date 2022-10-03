@@ -10,11 +10,11 @@ async function validateCustomerId(req,res,next){
 
     try {
         const queryCustomer = await connection.query('SELECT * FROM customers WHERE id=$1',[id]);
-        const customer = queryCustomer.rows[0];
-        if(!customer){
+        const customerId = queryCustomer.rows[0];
+        if(!customerId){
             return res.sendStatus(404);
         }
-        res.locals.customer = customer;
+        res.locals.customerId = customerId;
     } catch (error) {
         console.error(error);
         return res.sendStatus(500);

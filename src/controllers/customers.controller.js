@@ -19,8 +19,8 @@ async function getCustomers(req,res){
 }
 
 function getCustomersById(req,res){
-    const customer = res.locals.customer;
-    return res.send(customer);
+    const customerId = res.locals.customerId;
+    return res.send(customerId);
 }
 
 async function postCustomers(req,res){
@@ -38,4 +38,19 @@ async function postCustomers(req,res){
     return res.sendStatus(201);
 }
 
-export { getCustomers, getCustomersById, postCustomers };
+async function putCustomers(req,res){
+    const customer = res.locals.customer;
+    const id = res.locals.customerId.id;
+    try {
+        await connection.query(
+            'UPDATE customers SET name=$1, cpf=$2, phone=$3, birthday=$4 WHERE id=$5;',
+            [customer.name,customer.cpf,customer.phone,customer.birthday,id]
+        );
+    } catch (error) {
+        
+    }
+
+    return res.sendStatus(200);
+}
+
+export { getCustomers, getCustomersById, postCustomers, putCustomers };
